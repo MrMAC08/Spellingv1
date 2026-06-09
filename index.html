@@ -40,6 +40,19 @@
 
         .teacher-panel h2 { margin-top: 0; color: #495057; }
 
+        .bulk-textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+
         .word-config-row {
             display: grid;
             grid-template-columns: 1fr 2fr 3fr;
@@ -136,8 +149,16 @@
             <input type="text" id="teacherCodeSetting" value="sunny" style="padding:5px; font-size:1rem; width:120px;">
         </div>
 
+        <div style="margin-bottom: 15px;">
+            <label style="font-weight:bold; display:block; margin-bottom:5px;">Option A: Bulk Paste List (Word, Strategy, Sentence)</label>
+            <textarea id="bulkPasteInput" class="bulk-textarea" placeholder="there, The th plays fair., Please place folders over __ on the table.&#10;want, The w and nt play fair., Do you __ to play?"></textarea>
+            <button onclick="processBulkPaste()" style="margin-top:0; padding:6px 15px; font-size:0.85rem; background-color:#495057;">Parse Bulk List Below</button>
+        </div>
+
+        <hr style="border:0; border-top:1px solid #ced4da; margin:20px 0;">
+        <label style="font-weight:bold; display:block; margin-bottom:10px;">Option B: Edit Individual Active Slots</label>
         <div id="wordInputsContainer"></div>
-        <button onclick="saveAndReset()" style="background-color: var(--success);">Save and Restart Lesson</button>
+        <button onclick="saveAndReset()" style="background-color: var(--success); width:100%; margin-top:15px;">Save and Restart Lesson</button>
     </div>
 
     <div class="student-card" id="gameCard">
@@ -176,11 +197,38 @@
             row.className = 'word-config-row';
             row.innerHTML = `
                 <input type="text" id="w-${index}" value="${item.word}" placeholder="Word">
-                <input type="text" id="r-${index}" value="${item.rule}" placeholder="Spelling Strategy / Leave blank if none">
+                <input type="text" id="r-${index}" value="${item.rule}" placeholder="Spelling Strategy">
                 <input type="text" id="s-${index}" value="${item.sentence}" placeholder="Context Sentence">
             `;
             container.appendChild(row);
         });
+    }
+
+    function processBulkPaste() {
+        const rawText = document.getElementById('bulkPasteInput').value.trim();
+        if(!rawText) return alert("Please paste data into the bulk box first!");
+        
+        const lines = rawText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        
+        for (let i = 0; i < 5; i++) {
+            if (lines[i]) {
+                const parts = lines[i].split(',');
+                const extractedWord = parts[0] ? parts[0].trim().toLowerCase() : "";
+                const extractedRule = parts[1] ? parts[1].trim() : "";
+                const extractedSentence = parts.slice(2).join(',') ? parts.slice(2).join(',').trim() : "Fill in the blank: ___";
+
+                if (extractedWord) {
+                    curriculum[i] = {
+                        word: extractedWord,
+                        rule: extractedRule,
+                        sentence: extractedSentence
+                    };
+                }
+            }
+        }
+        buildTeacherPanel();
+        document.getElementById('bulkPasteInput').value = "";
+        alert("Successfully updated individual slots below. Click 'Save and Restart Lesson' to push changes active!");
     }
 
     function toggleTeacherPanel() {
@@ -355,7 +403,7 @@
             <p style="font-size:1.2rem; background:#f1f5f9; padding:10px; border-radius:8px;">Your Score: <strong>${finalScore}</strong></p>
             
             <div id="submissionZone">
-                <p style="color:#64748b;">Click the button below to open your Google Form entry and click Submit:</p>
+                <p style="color:#64748b;">Click below to open your Google Form entry and click Submit:</p>
                 <button onclick="openGoogleFormLink()" style="background-color: var(--success); font-size:1.3rem; padding:15px 35px;">Open Google Form</button>
             </div>
         `;
