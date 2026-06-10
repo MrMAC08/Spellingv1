@@ -3,468 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generic Master Vocabulary Station</title>
+    <title>Year 3 Vocabulary Station</title>
     <style>
-        :root {
-            --primary: #6366f1;
-            --success: #10b981;
-            --danger: #ef4444;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #0f172a;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .teacher-panel {
-            background: #f1f5f9;
-            border: 2px dashed #94a3b8;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
+        :root { --primary: #6366f1; --success: #10b981; --danger: #ef4444; --bg: #f8fafc; --card-bg: #ffffff; --text: #0f172a; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 800px; }
+        .teacher-panel { background: #f1f5f9; border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px; margin-bottom: 30px; }
         .teacher-panel h2 { margin-top: 0; color: #334155; }
-
-        .bulk-textarea {
-            width: 100%;
-            height: 180px;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 13px;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-            resize: vertical;
-        }
-
-        .student-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            padding: 40px;
-            text-align: center;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 650px;
-            margin-top: 20px;
-        }
-
-        .menu-btn {
-            background-color: #f8fafc;
-            color: var(--text);
-            border: 2px solid #e2e8f0;
-            padding: 18px;
-            font-size: 1.05rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .menu-btn:hover {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
+        .bulk-textarea { width: 100%; height: 180px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace; font-size: 13px; box-sizing: border-box; margin-bottom: 15px; resize: vertical; }
+        .student-card { background: var(--card-bg); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); padding: 40px; text-align: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; width: 100%; max-width: 650px; margin-top: 20px; }
+        .menu-btn { background-color: #f8fafc; color: var(--text); border: 2px solid #e2e8f0; padding: 18px; font-size: 1.05rem; border-radius: 10px; cursor: pointer; font-weight: bold; text-align: left; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-btn:hover { background-color: var(--primary); color: white; border-color: var(--primary); }
         .progress-bar { font-weight: bold; color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; }
-        .target-word { font-size: 4.5rem; font-weight: 800; letter-spacing: 1px; margin: 10px 0; color: var(--text); transition: opacity 0.5s ease; }
+        .target-word { font-size: 4.5rem; font-weight: 800; letter-spacing: 1px; margin: 10px 0; transition: opacity 0.5s ease; }
         .hidden-word { opacity: 0 !important; }
-        
-        .rule-box {
-            background: #f8fafc;
-            border-left: 5px solid var(--primary);
-            padding: 15px;
-            border-radius: 0 8px 8px 0;
-            font-size: 1.2rem;
-            margin: 20px 0;
-            max-width: 90%;
-            text-align: left;
-        }
-
-        .lock-container {
-            background: #fef2f2;
-            border: 2px dashed var(--danger);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .teacher-password-input, .student-input {
-            font-size: 1.5rem;
-            padding: 12px;
-            text-align: center;
-            border: 3px solid #cbd5e1;
-            border-radius: 8px;
-            outline: none;
-        }
+        .rule-box { background: #f8fafc; border-left: 5px solid var(--primary); padding: 15px; border-radius: 0 8px 8px 0; font-size: 1.2rem; margin: 20px 0; max-width: 90%; text-align: left; }
+        .lock-container { background: #fef2f2; border: 2px dashed var(--danger); border-radius: 8px; padding: 15px; margin: 0 auto; width: 90%; max-width: 400px; }
+        .teacher-password-input, .student-input { font-size: 1.5rem; padding: 12px; text-align: center; border: 3px solid #cbd5e1; border-radius: 8px; outline: none; }
         .teacher-password-input { width: 240px; font-size: 1.2rem; padding: 8px; text-transform: lowercase;}
         .student-input { width: 80%; max-width: 350px; text-transform: lowercase; }
-
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
+        button { background-color: var(--primary); color: white; border: none; padding: 12px 28px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; }
         button:hover { background-color: #4f46e5; }
         .sentence-prompt { font-size: 1.6rem; margin-bottom: 25px; line-height: 1.6; }
         .feedback { font-size: 1.2rem; font-weight: bold; margin-top: 15px; }
         .feedback.success { color: var(--success); }
         .feedback.error { color: var(--danger); }
-        .toggle-panel-btn { background: #64748b; margin-bottom: 10px; padding: 8px 16px; font-size: 0.9rem; }
+        .toggle-panel-btn { background: #64748b; margin-bottom: 10px; padding: 8px 16px; font-size: 0.9rem; color: white; border: none; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <button class="toggle-panel-btn" onclick="toggleTeacherPanel()">Open Control Panel</button>
-    
     <div class="teacher-panel" id="teacherPanel">
-        <h2>Vocabulary & Rules Setup</h2>
-        
+        <h2>Year 3 Setup Panel</h2>
         <div style="margin-bottom: 15px;">
             <label style="font-weight:bold;">First Word Unlock Passcode: </label>
             <input type="text" id="teacherCodeSetting" value="sunny" style="padding:5px; font-size:1rem; width:120px;">
         </div>
-
         <div style="margin-bottom: 15px;">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Paste Your Word List Below:</label>
-            <p style="font-size: 0.85rem; color: #475569; margin: 0 0 10px 0;">Format: Word, Rule/Category Name, Sentence with __ blank (One word per line)</p>
-            <textarea id="bulkPasteInput" class="bulk-textarea" placeholder="Examples:&#10;any, Heart Words, Do you have __ pencils left?&#10;farm, ar Rule, The cows stood in the muddy green __.&#10;cry, y as long i, Please try hard not to __ if you fall down."></textarea>
-            <button onclick="processBulkPaste()" style="margin-top:0; padding:10px 20px; font-size:1rem; background-color:var(--success); width:100%;">Process and Apply List</button>
+            <label style="font-weight:bold; display:block; margin-bottom:5px;">Paste Year 3 Word List Below:</label>
+            <textarea id="bulkPasteInput" class="bulk-textarea" placeholder="Word, Category, Sentence with __ blank"></textarea>
+            <button onclick="processBulkPaste()" style="margin-top:0; padding:10px 20px; font-size:1rem; background-color:var(--success); width:100%;">Apply List to Year 3</button>
         </div>
     </div>
-
     <div class="student-card" id="gameCard"></div>
 </div>
-
 <script>
     const formViewURL = "https://docs.google.com/forms/d/e/1FAIpQLSddB0NQFaIBv9x-feJucH_YGDwHb8suDI9h1ShPOv1yGzCCXQ/viewform";
-    const nameKey = "entry.421008981";
-    const wordsKey = "entry.1429911539";
-    const incorrectKey = "entry.407995943";
-    const scoreKey = "entry.211442136";
-
-    // Dynamic storage keys based on individual file names
-    const getPageName = () => {
-        const path = window.location.pathname;
-        return path.substring(path.lastIndexOf('/') + 1) || "default";
-    };
-    const storageKeyCurriculum = 'genericSavedCurriculum_' + getPageName();
-    const storageKeyCode = 'genericSavedCode_' + getPageName();
-
-    let masterRulesMap = {};
-    let activeLessonWords = [];
-    let currentWordIndex = 0;
-    let currentStep = 0; 
-    let masterTeacherCode = "sunny";
-    let activeLessonLabel = "";
+    const nameKey = "entry.421008981"; const wordsKey = "entry.1429911539"; const incorrectKey = "entry.407995943"; const scoreKey = "entry.211442136";
     
-    let studentName = "";
-    let correctWordsList = [];
-    let incorrectWordsList = [];
-    let correctCount = 0;
+    // Completely unique Year 3 storage lock
+    const storageKeyCurriculum = 'genericSavedCurriculum_Year3';
+    const storageKeyCode = 'genericSavedCode_Year3';
+
+    let masterRulesMap = {}; let activeLessonWords = []; let currentWordIndex = 0; let currentStep = 0; 
+    let masterTeacherCode = "sunny"; let activeLessonLabel = ""; let studentName = "";
+    let correctWordsList = []; let incorrectWordsList = []; let correctCount = 0;
 
     function processBulkPaste() {
         const rawText = document.getElementById('bulkPasteInput').value.trim();
-        if(!rawText) return alert("Please paste vocabulary data into the box first!");
-        
+        if(!rawText) return alert("Box is empty!");
         const lines = rawText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
         let tempMap = {};
-
         lines.forEach(line => {
             const parts = line.split(',');
             const word = parts[0] ? parts[0].trim().toLowerCase() : "";
             const ruleName = parts[1] ? parts[1].trim() : "General List";
             const sentence = parts.slice(2).join(',') ? parts.slice(2).join(',').trim() : "Fill in the blank: ___";
-
-            if (word) {
-                if (!tempMap[ruleName]) {
-                    tempMap[ruleName] = [];
-                }
-                tempMap[ruleName].push({ word, rule: ruleName, sentence });
-            }
+            if (word) { if (!tempMap[ruleName]) tempMap[ruleName] = []; tempMap[ruleName].push({ word, rule: ruleName, sentence }); }
         });
-
-        if (Object.keys(tempMap).length === 0) return alert("Could not read valid comma-separated data layout lines.");
-        
+        if (Object.keys(tempMap).length === 0) return alert("Invalid format layout lines.");
         masterRulesMap = tempMap;
         masterTeacherCode = document.getElementById('teacherCodeSetting').value.trim().toLowerCase();
-        
-        // Save using unique file-specific keys
         localStorage.setItem(storageKeyCurriculum, JSON.stringify(masterRulesMap));
         localStorage.setItem(storageKeyCode, masterTeacherCode);
-        
         document.getElementById('bulkPasteInput').value = "";
         toggleTeacherPanel();
-        
-        studentName = "";
-        currentStep = 0;
-        renderStep();
-        alert(`Successfully uploaded ${Object.keys(masterRulesMap).length} spelling target categories!`);
+        studentName = ""; currentStep = 0; renderStep();
+        alert(`Year 3 updated successfully!`);
     }
 
-    function toggleTeacherPanel() {
-        const panel = document.getElementById('teacherPanel');
-        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function getRequiredPassword() {
-        if (currentWordIndex === 0) return masterTeacherCode;
-        return activeLessonWords[currentWordIndex - 1].word; 
-    }
+    function toggleTeacherPanel() { const p = document.getElementById('teacherPanel'); p.style.display = p.style.display === 'none' ? 'block' : 'none'; }
+    function getRequiredPassword() { return currentWordIndex === 0 ? masterTeacherCode : activeLessonWords[currentWordIndex - 1].word; }
 
     function renderStep() {
         const card = document.getElementById('gameCard');
-        
         if (Object.keys(masterRulesMap).length === 0) {
-            card.innerHTML = `<h2>Station Setup Required</h2><p>Click the <strong>Open Control Panel</strong> button at the top to paste your words and sentences first!</p>`;
+            card.innerHTML = `<h2>Year 3 Station</h2><p>Click <strong>Open Control Panel</strong> to paste your Year 3 list!</p>`;
             return;
         }
-        
         if (currentStep === 0) {
-            card.innerHTML = `
-                <h2>Vocabulary Station</h2>
-                <p style="font-size: 1.2rem;">Enter your name to check in:</p>
-                <input type="text" id="nameInput" class="student-input" style="text-transform: none;" placeholder="Your Name...">
-                <br><button onclick="submitName()">Enter Station</button>
-            `;
+            card.innerHTML = `<h2>Vocabulary Station</h2><p style="font-size: 1.2rem;">Enter your name:</p><input type="text" id="nameInput" class="student-input" placeholder="Your Name..."><br><button onclick="submitName()">Enter Station</button>`;
             document.getElementById('nameInput').focus();
-            return;
-        }
-
-        if (currentStep === 0.5) {
-            let menuButtonsHTML = "";
-            const ruleNames = Object.keys(masterRulesMap);
-
-            ruleNames.forEach((ruleName) => {
-                const totalWords = masterRulesMap[ruleName].length;
-                menuButtonsHTML += `
-                    <button class="menu-btn" onclick="launchRule('${encodeURIComponent(ruleName)}')">
-                        <span style="display:block; margin-bottom: 8px;">${ruleName}</span>
-                        <span style="font-size:0.85rem; font-weight:normal; color:#64748b; display:block;">(${totalWords} words ready)</span>
-                    </button>
-                `;
+        } else if (currentStep === 0.5) {
+            let buttons = "";
+            Object.keys(masterRulesMap).forEach((ruleName) => {
+                buttons += `<button class="menu-btn" onclick="launchRule('${encodeURIComponent(ruleName)}')"><span style="display:block; margin-bottom: 8px;">${ruleName}</span><span style="font-size:0.85rem; font-weight:normal; color:#64748b;">(${masterRulesMap[ruleName].length} words)</span></button>`;
             });
-
-            card.innerHTML = `
-                <h2>Hello, ${studentName}!</h2>
-                <p style="font-size: 1.2rem; margin-bottom:10px;">Select your assigned list target below:</p>
-                <div class="menu-grid">${menuButtonsHTML}</div>
-            `;
-            return;
-        }
-
-        const currentData = activeLessonWords[currentWordIndex];
-        let progressHTML = `<div class="progress-bar">${activeLessonLabel} &bull; Word ${currentWordIndex + 1} of ${activeLessonWords.length}</div>`;
-
-        if (currentStep === 1) {
-            card.innerHTML = `
-                ${progressHTML}
-                <div class="target-word">${currentData.word}</div>
-                <div class="rule-box"><strong>Focus Pattern:</strong> ${currentData.rule}</div>
-                <button onclick="nextStep()">I Studied It</button>
-            `;
-        } 
-        else if (currentStep === 2) {
-            let passwordHint = currentWordIndex === 0 ? "Teacher entry code required." : `Type the previous word you just spelled!`;
-            
-            card.innerHTML = `
-                ${progressHTML}
-                <div style="font-size: 1.4rem; font-weight: bold; color: var(--danger);">Notebook Practice Task</div>
-                <ol style="text-align: left; margin: 20px auto; max-width: 85%; font-size: 1.2rem; line-height: 1.6;">
-                    <li>Write the focus rule in your book: <strong style="color:var(--primary);">${currentData.rule}</strong></li>
-                    <li>Write the word <strong style="color:var(--primary);">${currentData.word}</strong> on your paper <strong>5 times</strong>.</li>
-                </ol>
-                <div class="lock-container" style="margin: 0 auto;">
-                    <label style="font-weight: bold; display:block; margin-bottom:5px;">Review Password Lock</label>
-                    <span style="font-size:0.9rem; color:#64748b; display:block; margin-bottom:10px;">${passwordHint}</span>
-                    <input type="text" id="passInput" class="teacher-password-input" placeholder="Enter password..." autocomplete="off">
-                    <br><button onclick="verifyTeacherCode()" style="margin-top:10px; padding: 8px 20px; font-size: 0.95rem; background-color: var(--danger);">Unlock Card</button>
-                    <div id="lockFeedback" class="feedback"></div>
-                </div>
-            `;
-            document.getElementById('passInput').focus();
-        } 
-        else if (currentStep === 3) {
-            card.innerHTML = `
-                ${progressHTML}
-                <p style="font-size:1.3rem;">Study the word before it disappears...</p>
-                <div class="target-word" id="fadingWord">${currentData.word}</div>
-            `;
-            setTimeout(() => {
-                const el = document.getElementById('fadingWord');
-                if(el) el.classList.add('hidden-word');
-                setTimeout(() => { nextStep(); }, 800);
-            }, 1800); 
-        } 
-        else if (currentStep === 4) {
-            card.innerHTML = `
-                ${progressHTML}
-                <div class="sentence-prompt">${currentData.sentence}</div>
-                <div class="input-area">
-                    <input type="text" id="testInput" class="student-input" placeholder="Spell the word here" autocomplete="off">
-                </div>
-                <button onclick="checkTestAnswer()">Verify Spelling</button>
-                <div id="testFeedback" class="feedback"></div>
-            `;
-            document.getElementById('testInput').focus();
+            card.innerHTML = `<h2>Hello, ${studentName}!</h2><p style="font-size: 1.2rem; margin-bottom:10px;">Select your list:</p><div class="menu-grid">${buttons}</div>`;
+        } else {
+            const currentData = activeLessonWords[currentWordIndex];
+            let progressHTML = `<div class="progress-bar">${activeLessonLabel} &bull; Word ${currentWordIndex + 1} of ${activeLessonWords.length}</div>`;
+            if (currentStep === 1) {
+                card.innerHTML = `${progressHTML}<div class="target-word">${currentData.word}</div><div class="rule-box"><strong>Pattern:</strong> ${currentData.rule}</div><button onclick="nextStep()">I Studied It</button>`;
+            } else if (currentStep === 2) {
+                let hint = currentWordIndex === 0 ? "Teacher code required." : "Type the previous word you just spelled!";
+                card.innerHTML = `${progressHTML}<div style="font-size: 1.4rem; font-weight: bold; color: var(--danger);">Notebook Practice</div><ol style="text-align: left; margin: 20px auto; max-width: 85%; font-size: 1.2rem; line-height: 1.6;"><li>Write the rule: <strong>${currentData.rule}</strong></li><li>Write <strong>${currentData.word}</strong> on paper 5 times.</li></ol><div class="lock-container"><label style="font-weight: bold; display:block; margin-bottom:5px;">Password Lock</label><span style="font-size:0.9rem; color:#64748b; display:block; margin-bottom:10px;">${hint}</span><input type="text" id="passInput" class="teacher-password-input" placeholder="Password..." autocomplete="off"><br><button onclick="verifyTeacherCode()" style="margin-top:10px; padding: 8px 20px; background-color: var(--danger);">Unlock</button><div id="lockFeedback" class="feedback"></div></div>`;
+                document.getElementById('passInput').focus();
+            } else if (currentStep === 3) {
+                card.innerHTML = `${progressHTML}<p style="font-size:1.3rem;">Study before it disappears...</p><div class="target-word" id="fadingWord">${currentData.word}</div>`;
+                setTimeout(() => { document.getElementById('fadingWord')?.classList.add('hidden-word'); setTimeout(() => { nextStep(); }, 800); }, 1800);
+            } else if (currentStep === 4) {
+                card.innerHTML = `${progressHTML}<div class="sentence-prompt">${currentData.sentence}</div><input type="text" id="testInput" class="student-input" placeholder="Spell here" autocomplete="off"><br><button onclick="checkTestAnswer()">Verify Spelling</button><div id="testFeedback" class="feedback"></div>`;
+                document.getElementById('testInput').focus();
+            }
         }
     }
 
-    function submitName() {
-        const val = document.getElementById('nameInput').value.trim();
-        if(val) { studentName = val; currentStep = 0.5; renderStep(); }
-    }
-
-    function launchRule(encodedRuleName) {
-        const ruleName = decodeURIComponent(encodedRuleName);
-        activeLessonWords = masterRulesMap[ruleName];
-        activeLessonLabel = ruleName;
-        
-        currentWordIndex = 0;
-        correctWordsList = [];
-        incorrectWordsList = [];
-        correctCount = 0;
-        
-        currentStep = 1;
-        renderStep();
-    }
-
+    function submitName() { const val = document.getElementById('nameInput').value.trim(); if(val) { studentName = val; currentStep = 0.5; renderStep(); } }
+    function launchRule(encoded) { activeLessonWords = masterRulesMap[decodeURIComponent(encoded)]; activeLessonLabel = decodeURIComponent(encoded); currentWordIndex = 0; correctWordsList = []; incorrectWordsList = []; correctCount = 0; currentStep = 1; renderStep(); }
     function nextStep() { currentStep++; renderStep(); }
-
-    function verifyTeacherCode() {
-        const input = document.getElementById('passInput').value.trim().toLowerCase();
-        if(input === getRequiredPassword()) { nextStep(); } 
-        else {
-            const feedback = document.getElementById('lockFeedback');
-            feedback.className = "feedback error";
-            feedback.innerHTML = "Code does not match. Keep trying!";
-            document.getElementById('passInput').value = '';
-        }
-    }
-
+    function verifyTeacherCode() { if(document.getElementById('passInput').value.trim().toLowerCase() === getRequiredPassword()) { nextStep(); } else { const fb = document.getElementById('lockFeedback'); fb.className = "feedback error"; fb.innerHTML = "Incorrect code."; } }
+    
     function checkTestAnswer() {
         const entered = document.getElementById('testInput').value.trim().toLowerCase();
         const correct = activeLessonWords[currentWordIndex].word;
-        
-        let isCorrect = (entered === correct);
-        if(isCorrect) {
-            correctCount++;
-            correctWordsList.push(correct);
-        } else {
-            let attempt = entered === "" ? "[Left Blank]" : entered;
-            incorrectWordsList.push(`${attempt} (Target: ${correct})`);
-        }
-        
-        const feedback = document.getElementById('testFeedback');
-        if (isCorrect) {
-            feedback.className = "feedback success";
-            feedback.innerHTML = "Correct!";
-        } else {
-            feedback.className = "feedback error";
-            feedback.innerHTML = `Incorrect. The correct spelling is "${correct}".`;
-        }
-
-        setTimeout(() => {
-            if (currentWordIndex < activeLessonWords.length - 1) {
-                currentWordIndex++;
-                currentStep = 1;
-                renderStep();
-            } else {
-                showEndScreen();
-            }
-        }, 2200);
+        if(entered === correct) { correctCount++; correctWordsList.push(correct); } else { incorrectWordsList.push(`${entered || '[Blank]'} (${correct})`); }
+        const fb = document.getElementById('testFeedback');
+        fb.className = entered === correct ? "feedback success" : "feedback error";
+        fb.innerHTML = entered === correct ? "Correct!" : `Incorrect. Spelling is "${correct}".`;
+        setTimeout(() => { if (currentWordIndex < activeLessonWords.length - 1) { currentWordIndex++; currentStep = 1; renderStep(); } else { showEndScreen(); } }, 2200);
     }
 
     function showEndScreen() {
-        const card = document.getElementById('gameCard');
         let finalScore = `${correctCount} out of ${activeLessonWords.length}`;
-
-        card.innerHTML = `
-            <h1 style="color: var(--success); font-size: 2.5rem;">Practice Complete</h1>
-            <p style="font-size:1.3rem;">Excellent job adjusting to <strong>${activeLessonLabel}</strong>, <strong>${studentName}</strong>!</p>
-            <p style="font-size:1.2rem; background:#f1f5f9; padding:10px; border-radius:8px;">Your Track Result: <strong>${finalScore}</strong></p>
-            
-            <div id="submissionZone">
-                <p style="color:#64748b;">Submit your session progress to the tracking dashboard:</p>
-                <button onclick="openGoogleFormLink()" style="background-color: var(--success); font-size:1.3rem; padding:15px 35px;">Send Progress Form</button>
-            </div>
-        `;
+        document.getElementById('gameCard').innerHTML = `<h1 style="color: var(--success);">Practice Complete</h1><p>Great job, ${studentName}!</p><p>Score: <strong>${finalScore}</strong></p><div id="submissionZone"><button onclick="openGoogleFormLink()">Send Progress Form</button></div>`;
     }
 
     function openGoogleFormLink() {
-        let correctReport = correctWordsList.join(', ') || "None";
-        let incorrectReport = incorrectWordsList.join(', ') || "None";
         let finalScore = `${correctCount} out of ${activeLessonWords.length}`;
-
-        let filledURL = `${formViewURL}?usp=pp_url&${nameKey}=${encodeURIComponent(studentName)}&${wordsKey}=${encodeURIComponent(correctReport)}&${incorrectKey}=${encodeURIComponent(incorrectReport)}&${scoreKey}=${encodeURIComponent(finalScore)}`;
-        
+        let filledURL = `${formViewURL}?usp=pp_url&${nameKey}=${encodeURIComponent(studentName)}&${wordsKey}=${encodeURIComponent(correctWordsList.join(', ') || "None")}&${incorrectKey}=${encodeURIComponent(incorrectWordsList.join(', ') || "None")}&${scoreKey}=${encodeURIComponent(finalScore)}`;
         window.open(filledURL, '_blank');
-
-        document.getElementById('submissionZone').innerHTML = `<p style="color: var(--success); font-weight:bold; font-size:1.2rem;">Tracking form opened in a new window! Remember to click Submit on that page.</p>`;
-        setTimeout(() => { showPostSubmitOptions(); }, 1500);
-    }
-
-    function showPostSubmitOptions() {
-        const card = document.getElementById('gameCard');
-        card.innerHTML += `
-            <hr style="width:80%; margin:20px 0; border:1px solid #e2e8f0;">
-            <button onclick="currentStep=0.5; renderStep();" style="background-color:#64748b; margin-right:10px;">Select Another Rule</button>
-            <button onclick="studentName=''; currentStep=0; renderStep();" style="background-color:var(--primary);">Log Out Student</button>
-        `;
+        document.getElementById('submissionZone').innerHTML = `<p style="color: var(--success); font-weight:bold;">Form opened! Click submit on that page.</p>`;
     }
 
     function init() {
-        // Load values dynamically using the file-specific keys
         const savedCurriculum = localStorage.getItem(storageKeyCurriculum);
         const savedCode = localStorage.getItem(storageKeyCode);
         if (savedCurriculum) masterRulesMap = JSON.parse(savedCurriculum);
         if (savedCode) masterTeacherCode = savedCode;
     }
-
     document.getElementById('teacherPanel').style.display = 'none';
-    init();
-    renderStep();
+    init(); renderStep();
 </script>
-
 </body>
 </html>
