@@ -183,9 +183,15 @@
     const incorrectKey = "entry.407995943";
     const scoreKey = "entry.211442136";
 
-    // Starts empty - you populate this by pasting into the box!
-    let masterRulesMap = {};
+    // Dynamic storage keys based on individual file names
+    const getPageName = () => {
+        const path = window.location.pathname;
+        return path.substring(path.lastIndexOf('/') + 1) || "default";
+    };
+    const storageKeyCurriculum = 'genericSavedCurriculum_' + getPageName();
+    const storageKeyCode = 'genericSavedCode_' + getPageName();
 
+    let masterRulesMap = {};
     let activeLessonWords = [];
     let currentWordIndex = 0;
     let currentStep = 0; 
@@ -222,8 +228,10 @@
         
         masterRulesMap = tempMap;
         masterTeacherCode = document.getElementById('teacherCodeSetting').value.trim().toLowerCase();
-        localStorage.setItem('genericSavedCurriculum', JSON.stringify(masterRulesMap));
-        localStorage.setItem('genericSavedCode', masterTeacherCode);
+        
+        // Save using unique file-specific keys
+        localStorage.setItem(storageKeyCurriculum, JSON.stringify(masterRulesMap));
+        localStorage.setItem(storageKeyCode, masterTeacherCode);
         
         document.getElementById('bulkPasteInput').value = "";
         toggleTeacherPanel();
@@ -446,8 +454,9 @@
     }
 
     function init() {
-        const savedCurriculum = localStorage.getItem('genericSavedCurriculum');
-        const savedCode = localStorage.getItem('genericSavedCode');
+        // Load values dynamically using the file-specific keys
+        const savedCurriculum = localStorage.getItem(storageKeyCurriculum);
+        const savedCode = localStorage.getItem(storageKeyCode);
         if (savedCurriculum) masterRulesMap = JSON.parse(savedCurriculum);
         if (savedCode) masterTeacherCode = savedCode;
     }
