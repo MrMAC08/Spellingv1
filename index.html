@@ -18,7 +18,9 @@
         .progress-bar { font-weight: bold; color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; }
         .target-word { font-size: 4.5rem; font-weight: 800; letter-spacing: 1px; margin: 10px 0; transition: opacity 0.5s ease; }
         .hidden-word { opacity: 0 !important; }
-        .rule-box { background: #f8fafc; border-left: 5px solid var(--primary); padding: 15px; border-radius: 0 8px 8px 0; font-size: 1.2rem; margin: 20px 0; max-width: 90%; text-align: left; }
+        .rule-box { background: #f8fafc; border-left: 5px solid var(--primary); padding: 20px; border-radius: 0 8px 8px 0; font-size: 1.15rem; margin: 20px 0; max-width: 90%; text-align: left; line-height: 1.6; }
+        .rule-box strong { color: var(--primary); }
+        .rule-box ul { margin: 8px 0; padding-left: 20px; }
         .lock-container { background: #fef2f2; border: 2px dashed var(--danger); border-radius: 8px; padding: 15px; margin: 0 auto; width: 90%; max-width: 400px; }
         .teacher-password-input, .student-input { font-size: 1.5rem; padding: 12px; text-align: center; border: 3px solid #cbd5e1; border-radius: 8px; outline: none; }
         .teacher-password-input { width: 240px; font-size: 1.2rem; padding: 8px; text-transform: lowercase;}
@@ -35,7 +37,7 @@
 </head>
 <body>
 <div class="container">
-    <button class="toggle-panel-btn" onclick="toggleTeacherPanel()">Open Control Panel</button>
+    <button class="toggle-panel-btn" onclick="secureTogglePanel()">Open Control Panel</button>
     <div class="teacher-panel" id="teacherPanel">
         <h2>Year 3 Setup Panel</h2>
         <div style="margin-bottom: 15px;">
@@ -53,29 +55,27 @@
 </div>
 
 <script>
-    // Master Spelling Rules Dictionary Lookup Map
+    // Deep Educational Rules Dictionary for Year 3
     const MASTER_SPELLING_RULES = {
-        // --- YEAR 2 & 3 HYBRID RULES ---
-        "oo_team": "💡 <strong>The 'oo' Vowel Team:</strong> The letters 'oo' can make two different sounds! It can be a short sound like in <em>good</em>, or a long sound like in <em>food</em>.",
-        "compound_words": "💡 <strong>Compound Words:</strong> This is when two complete words join together to make a brand-new word with a new meaning (like <em>some</em> + <em>thing</em> = <em>something</em>)!",
-        "consonant_clusters": "💡 <strong>3-Letter Blends:</strong> In words starting with clusters like 'str', 'spr', 'scr', or 'spl', keep your mouth moving smoothly! Each letter keeps its sound.",
-        "ee_ea_team": "💡 <strong>The Long /e/ Sound:</strong> Both 'ee' (like <em>tree</em>) and 'ea' (like <em>beach</em>) are vowel teams that team up to say the long /e/ sound.",
-        "oa_ow_team": "💡 <strong>The Long /o/ Sound:</strong> Vowel teams 'oa' (in the middle like <em>boat</em>) and 'ow' (usually at the end like <em>slow</em>) join forces to say the long /o/ sound.",
-        "r_controlled_ar_or": "💡 <strong>The Bossy R Rule (/ar/ and /or/):</strong> When 'r' sits right after 'a' or 'o', it becomes bossy! It changes their sounds to /ar/ (<em>farm</em>) or /or/ (<em>fork</em>).",
-        "final_y_vowel": "💡 <strong>Tricky Final 'Y':</strong> At the end of a short 1-syllable word, 'y' sounds like a long /i/ (<em>cry</em>). In a longer 2-syllable word, it sounds like a long /e/ (<em>puppy</em>)!",
-        "prefix_un": "💡 <strong>The Prefix 'un-':</strong> Adding 'un-' to the front of a word changes its meaning to mean <strong>'not'</strong> or the opposite (like <em>lucky</em> becomes <em>unlucky</em>).",
+        "final_y_vowel": "🏫 <strong>The 'Y' as a Vowel Lesson:</strong><br>Did you know the letter <strong>Y</strong> acts like a copycat thief? It doesn't have its own vowel sound, so it steals sounds from English vowels depending on how long the word is!<br><ul><li>In short, <strong>1-syllable words</strong>, Y steals the long <strong>/i/</strong> sound (like <em>cry</em>, <em>fly</em>, <em>try</em>).</li><li>In longer, <strong>2-syllable words</strong>, Y steals the long <strong>/e/</strong> sound (like <em>puppy</em>, <em>baby</em>, <em>candy</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> Listen to the syllables! If you hear a long /e/ at the very end of a two-beat word, don't write an 'e'—write a <strong>y</strong>!",
         
-        // --- CORE YEAR 3 RULES ---
-        "r_controlled_er_ir_u": "💡 <strong>The Bossy R Rule (/er/):</strong> When 'r' follows 'e', 'i', or 'u', it changes all of their sounds into the exact same /er/ sound (like <em>her</em>, <em>girl</em>, and <em>turn</em>)!",
-        "suffix_ly_er_est": "💡 <strong>Suffix Meanings:</strong> Adding '-ly' describes an action. We use '-er' and '-est' at the end of words when we are comparing items!",
-        "trigraph_tch": "💡 <strong>The Trigraph 'tch':</strong> Use 'tch' at the very end of a 1-syllable word, but only if it comes straight after a short vowel sound (like <em>catch</em> or <em>stitch</em>).",
-        "vccv_syllable": "💡 <strong>Syllable Division (VCCV):</strong> When a word has a Vowel-Consonant-Consonant-Vowel pattern (like <em>trum-pet</em>), chop it right in half between the two consonants!",
-        "vcv_camel_rule": "💡 <strong>The Camel Rule (VC.V):</strong> When one consonant stands between two vowels, we usually break the syllable *after* the consonant to keep the first vowel short (like <em>cam-el</em>).",
-        "v_cv_tiger_rule": "💡 <strong>The Tiger Rule (V.CV):</strong> When one consonant stands between two vowels, try breaking the syllable *before* it to keep the first vowel sound long (like <em>ti-ger</em>).",
-        "suffix_ful_less": "💡 <strong>Suffixes -ful and -less:</strong> The suffix '-ful' means 'full of' (spelled with **one l**). The suffix '-less' means 'without'.",
-        "cvc_doubling": "💡 <strong>The CVC Doubling Rule:</strong> If a 1-syllable word ends in a Consonant-Vowel-Consonant pattern (like <em>run</em>), you must **double the final consonant** before adding an ending like -ing (<em>running</em>).",
-        "silent_e_suffix": "💡 <strong>The Silent E Suffix Rule:</strong> When adding a vowel suffix (like -ing), **drop** the silent 'e' (<em>hope</em> -> <em>hoping</em>). When adding a consonant suffix (like -ful), **keep** it (<em>hopeful</em>).",
-        "consonant_le": "💡 <strong>The -Cle Syllable:</strong> Words ending in a consonant + 'le' (like <em>table</em> or <em>wiggle</em>) break right before that unit. Double the middle consonant if the vowel before it is short (<em>bub-ble</em>)!"
+        "trigraph_tch": "🏫 <strong>The Trigraph 'tch' Lesson:</strong><br>A trigraph is a fancy word for <strong>three letters making one single sound</strong>. The letters <strong>t, c, and h</strong> team up to make the crisp /ch/ sound. But they only get to work under very strict circumstances!<br><ul><li>Use <strong>tch</strong> right after a single, short vowel sound (like in <em>ca-tch</em>, <em>fe-tch</em>, or <em>ma-tch</em>).</li><li>If there is a long vowel or a consonant blocker in the way, use regular <strong>ch</strong> instead (like <em>bench</em> or <em>reach</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> If the vowel right before the /ch/ sound is short and sharp, it needs the protective <strong>t</strong> structure!",
+        
+        "r_controlled_er_ir_u": "🏫 <strong>The Bossy R (/er/) Lesson:</strong><br>The letter <strong>R</strong> is incredibly loud and bossy. When it sits right behind the vowels <strong>e, i, or u</strong>, it completely steals their voices and forces them all to make the exact same <strong>/er/</strong> sound!<br><ul><li><strong>er</strong> is the most common pattern (like <em>her</em>, <em>term</em>).</li><li><strong>ir</strong> often shows up in action words or birds (like <em>twirl</em>, <em>girl</em>, <em>bird</em>).</li><li><strong>ur</strong> is typically found in deep sounds or items (like <em>burn</em>, <em>fur</em>, <em>turn</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> Because they sound identical, try to memorize the 'word family' shapes in your mind while writing them down.",
+        
+        "vccv_syllable": "🏫 <strong>Syllable Division (VCCV) Lesson:</strong><br>When you hit a big word, look closely at the pattern of its letters. If you see a <strong>Vowel-Consonant-Consonant-Vowel</strong> pattern, you can use the 'Chop Rule' to split it completely in half between the two consonants!<br><ul><li>Look at <strong>trumpet</strong>: u (vowel), m (consonant), p (consonant), e (vowel). Chop it: <em>trum - pet</em>.</li><li>Look at <strong>kitten</strong>: i (vowel), t (consonant), t (consonant), e (vowel). Chop it: <em>kit - ten</em>.</li></ul>⚠️ <strong>Spelling Check:</strong> Dividing words into these smaller chunks keeps the first vowel locked into its short, native sound!",
+        
+        "vcv_camel_rule": "🏫 <strong>The Camel Rule (VC.V) Lesson:</strong><br>What happens when there is only <strong>one consonant</strong> trapped between two vowels? Usually, the word breaks before the consonant. But the Camel Rule is the special exception where we break the word <strong>after</strong> the consonant!<br><ul><li>In the word <strong>camel</strong>, the 'm' goes with the first part: <em>cam - el</em>. This keeps the 'a' short and crisp.</li><li>Same with <strong>cabin</strong>: <em>cab - in</em>. It keeps the 'a' sounding like /a/ instead of /ay/.</li></ul>⚠️ <strong>Spelling Check:</strong> If you hear a short vowel sound followed by a single consonant beat, the consonant is anchoring that short vowel!",
+        
+        "v_cv_tiger_rule": "🏫 <strong>The Tiger Rule (V.CV) Lesson:</strong><br>This is the standard rule for a single consonant between two vowels. We divide the word safely <strong>before</strong> the consonant. This leaves the first vowel wide open, letting it shout its long name!<br><ul><li>Look at <strong>tiger</strong>: We split before the g: <em>ti - ger</em>. The 'i' says its long name!</li><li>Look at <strong>paper</strong>: We split before the p: <em>pa - per</em>. The 'a' says its long name!</li></ul>⚠️ <strong>Spelling Check:</strong> If the first syllable sounds completely open and ends in a pure vowel name, split right after it.",
+        
+        "suffix_ful_less": "🏫 <strong>Suffix Meanings (-ful and -less):</strong><br>A suffix is a building block added to the end of a base word that changes what the word means.<br><ul><li><strong>-ful</strong> means 'full of' (like <em>helpful</em> means full of help). <strong>Crucial Warning:</strong> Even though it means 'full', it is spelled with only <strong>one L</strong> at the end!</li><li><strong>-less</strong> means 'without' (like <em>fearless</em> means completely without fear).</li></ul>⚠️ <strong>Spelling Check:</strong> Watch that tricky '-ful'! Never write double 'll' when it is acting as a suffix helper.",
+        
+        "cvc_doubling": "🏫 <strong>The CVC Doubling Lesson:</strong><br>Before you attach a vowel ending (like <em>-ing</em> or <em>-ed</em>) to a short 1-syllable word, you must check its tail. If it ends in a strict <strong>Consonant-Vowel-Consonant</strong> order, you have to <strong>double the final letter</strong>!<br><ul><li>Take <strong>run</strong> (CVC) -> double the n -> <strong>running</strong>.</li><li>Take <strong>hop</strong> (CVC) -> double the p -> <strong>hopped</strong>.</li></ul>⚠️ <strong>Spelling Check:</strong> If you forget to double the letter, the vowel suffix will turn the word into a completely different long sound (like <em>hoping</em> instead of <em>hopping</em>)!",
+        
+        "silent_e_suffix": "🏫 <strong>The Silent E Drop Lesson:</strong><br>Silent 'E' loves to hide at the end of words to make vowels say their long names (like <em>hope</em> or <em>bake</em>). But when adding suffixes, it has to follow strict traffic rules:<br><ul><li>If the suffix starts with a <strong>vowel</strong> (like -ing, -ed), you must <strong>drop the E completely</strong> (<em>bake</em> becomes <em>baking</em>).</li><li>If the suffix starts with a <strong>consonant</strong> (like -ful, -ly), you <strong>keep the E safely in place</strong> (<em>hope</em> becomes <em>hopeful</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> Look closely at the suffix you are pasting on. Is its first letter a vowel? Drop that 'e'!",
+        
+        "consonant_le": "🏫 <strong>The Consonant + 'le' Syllable Lesson:</strong><br>Words ending in <strong>-le</strong> have a unique rule: the 'le' always grabs the consonant sitting right in front of it to form its own final syllable unit!<br><ul><li>In <strong>table</strong>, 'le' grabs 'b' to make <em>ta - ble</em>.</li><li>In <strong>purple</strong>, 'le' grabs 'p' to make <em>pur - ple</em>.</li><li>In <strong>bubble</strong>, the vowel is short, so we double the consonant to divide safely: <em>bub - ble</em>.</li></ul>⚠️ <strong>Spelling Check:</strong> Count three letters from the very end of the word backwards (like b-l-e), and that is exactly where your syllable breaks!"
     };
 
     const formViewURL = "https://docs.google.com/forms/d/e/1FAIpQLSddB0NQFaIBv9x-feJucH_YGDwHb8suDI9h1ShPOv1yGzCCXQ/viewform";
@@ -83,10 +83,28 @@
     
     const storageKeyCurriculum = 'genericSavedCurriculum_Year3';
     const storageKeyCode = 'genericSavedCode_Year3';
+    
+    // Hidden Master Security Password to open the panel
+    const MASTER_PANEL_PASSWORD = "admin"; 
 
     let masterRulesMap = {}; let activeLessonWords = []; let currentWordIndex = 0; let currentStep = 0; 
     let masterTeacherCode = "sunny"; let activeLessonLabel = ""; let studentName = "";
     let correctWordsList = []; let incorrectWordsList = []; let correctCount = 0;
+
+    // Checks master password before revealing the panel configuration
+    function secureTogglePanel() {
+        const p = document.getElementById('teacherPanel');
+        if (p.style.display === 'none' || p.style.display === '') {
+            const check = prompt("Enter Master Teacher Password to unlock configuration:");
+            if (check === MASTER_PANEL_PASSWORD) {
+                p.style.display = 'block';
+            } else if (check !== null) {
+                alert("Incorrect teacher security credentials.");
+            }
+        } else {
+            p.style.display = 'none';
+        }
+    }
 
     function processBulkPaste() {
         const rawText = document.getElementById('bulkPasteInput').value.trim();
@@ -106,14 +124,9 @@
         localStorage.setItem(storageKeyCurriculum, JSON.stringify(masterRulesMap));
         localStorage.setItem(storageKeyCode, masterTeacherCode);
         document.getElementById('bulkPasteInput').value = "";
-        toggleTeacherPanel();
+        document.getElementById('teacherPanel').style.display = 'none';
         studentName = ""; currentStep = 0; renderStep();
         alert(`Year 3 updated successfully!`);
-    }
-
-    function toggleTeacherPanel() { 
-        const p = document.getElementById('teacherPanel'); 
-        p.style.display = p.style.display === 'none' ? 'block' : 'none'; 
     }
     
     function getRequiredPassword() { 
@@ -139,8 +152,7 @@
             const currentData = activeLessonWords[currentWordIndex];
             let progressHTML = `<div class="progress-bar">${activeLessonLabel} &bull; Word ${currentWordIndex + 1} of ${activeLessonWords.length}</div>`;
             
-            // Evaluates rule key inside dictionary cleanly
-            let ruleExplanation = MASTER_SPELLING_RULES[currentData.rule] || `💡 <strong>Pattern Rule:</strong> Focus on spelling words in the ${currentData.rule} category carefully!`;
+            let ruleExplanation = MASTER_SPELLING_RULES[currentData.rule] || `💡 <strong>Pattern Rule:</strong> Focus on spelling words in the <em>${currentData.rule}</em> category carefully!`;
 
             if (currentStep === 1) {
                 card.innerHTML = `${progressHTML}<div class="target-word">${currentData.word}</div><div class="rule-box">${ruleExplanation}</div><button onclick="nextStep()">I Studied It</button>`;
