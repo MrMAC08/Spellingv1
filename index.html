@@ -55,7 +55,7 @@
 </div>
 
 <script>
-    // Deep Educational Rules Dictionary for Year 3
+    // Comprehensive Master Dictionary covering all core Year 3 curriculum patterns
     const MASTER_SPELLING_RULES = {
         "final_y_vowel": "🏫 <strong>The 'Y' as a Vowel Lesson:</strong><br>Did you know the letter <strong>Y</strong> acts like a copycat thief? It doesn't have its own vowel sound, so it steals sounds from English vowels depending on how long the word is!<br><ul><li>In short, <strong>1-syllable words</strong>, Y steals the long <strong>/i/</strong> sound (like <em>cry</em>, <em>fly</em>, <em>try</em>).</li><li>In longer, <strong>2-syllable words</strong>, Y steals the long <strong>/e/</strong> sound (like <em>puppy</em>, <em>baby</em>, <em>candy</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> Listen to the syllables! If you hear a long /e/ at the very end of a two-beat word, don't write an 'e'—write a <strong>y</strong>!",
         
@@ -71,7 +71,7 @@
         
         "suffix_ful_less": "🏫 <strong>Suffix Meanings (-ful and -less):</strong><br>A suffix is a building block added to the end of a base word that changes what the word means.<br><ul><li><strong>-ful</strong> means 'full of' (like <em>helpful</em> means full of help). <strong>Crucial Warning:</strong> Even though it means 'full', it is spelled with only <strong>one L</strong> at the end!</li><li><strong>-less</strong> means 'without' (like <em>fearless</em> means completely without fear).</li></ul>⚠️ <strong>Spelling Check:</strong> Watch that tricky '-ful'! Never write double 'll' when it is acting as a suffix helper.",
         
-        "cvc_doubling": "🏫 <strong>The CVC Doubling Lesson:</strong><br>Before you attach a vowel ending (like <em>-ing</em> or <em>-ed</em>) to a short 1-syllable word, you must check its tail. If it ends in a strict <strong>Consonant-Vowel-Consonant</strong> order, you have to <strong>double the final letter</strong>!<br><ul><li>Take <strong>run</strong> (CVC) -> double the n -> <strong>running</strong>.</li><li>Take <strong>hop</strong> (CVC) -> double the p -> <strong>hopped</strong>.</li></ul>⚠️ <strong>Spelling Check:</strong> If you forget to double the letter, the vowel suffix will turn the word into a completely different long sound (like <em>hoping</em> instead of <em>hopping</em>)!",
+        "cvc_doubling": "🏫 <strong>The CVC Doubling Lesson:</strong><br>Before you attach a vowel ending (like <em>-ing</em> or <em>-ed</em>) to a short 1-syllable word, you must check its tail. If it ends in a strict <strong>Consonant-Vowel-Consonant</strong> order, you have to <strong>double the final letter</strong>!<br><ul><li>Take <strong>run</strong> (CVC) -> double the n -> <strong>running</strong>.</li><li>Take <strong>hop</strong> (CVC) -> double the p -> <strong>hopped</strong>.</li></ul>⚠️ <strong>Spelling Check:</strong> If you forget to double the letter, the vowel suffix will turn the word into a completely different long sound (like <em>hopeing</em> instead of <em>hopping</em>)!",
         
         "silent_e_suffix": "🏫 <strong>The Silent E Drop Lesson:</strong><br>Silent 'E' loves to hide at the end of words to make vowels say their long names (like <em>hope</em> or <em>bake</em>). But when adding suffixes, it has to follow strict traffic rules:<br><ul><li>If the suffix starts with a <strong>vowel</strong> (like -ing, -ed), you must <strong>drop the E completely</strong> (<em>bake</em> becomes <em>baking</em>).</li><li>If the suffix starts with a <strong>consonant</strong> (like -ful, -ly), you <strong>keep the E safely in place</strong> (<em>hope</em> becomes <em>hopeful</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> Look closely at the suffix you are pasting on. Is its first letter a vowel? Drop that 'e'!",
         
@@ -83,27 +83,19 @@
     
     const storageKeyCurriculum = 'genericSavedCurriculum_Year3';
     const storageKeyCode = 'genericSavedCode_Year3';
-    
-    // Hidden Master Security Password to open the panel
     const MASTER_PANEL_PASSWORD = "admin"; 
 
     let masterRulesMap = {}; let activeLessonWords = []; let currentWordIndex = 0; let currentStep = 0; 
     let masterTeacherCode = "sunny"; let activeLessonLabel = ""; let studentName = "";
     let correctWordsList = []; let incorrectWordsList = []; let correctCount = 0;
 
-    // Checks master password before revealing the panel configuration
     function secureTogglePanel() {
         const p = document.getElementById('teacherPanel');
         if (p.style.display === 'none' || p.style.display === '') {
             const check = prompt("Enter Master Teacher Password to unlock configuration:");
-            if (check === MASTER_PANEL_PASSWORD) {
-                p.style.display = 'block';
-            } else if (check !== null) {
-                alert("Incorrect teacher security credentials.");
-            }
-        } else {
-            p.style.display = 'none';
-        }
+            if (check === MASTER_PANEL_PASSWORD) { p.style.display = 'block'; }
+            else if (check !== null) { alert("Incorrect teacher security credentials."); }
+        } else { p.style.display = 'none'; }
     }
 
     function processBulkPaste() {
@@ -133,6 +125,17 @@
         return currentWordIndex === 0 ? masterTeacherCode : activeLessonWords[currentWordIndex - 1].word; 
     }
 
+    // Smart Matcher: Automatically strips extra tags like '_part1' or spaces to identify the root rule
+    function findRuleExplanation(rawRuleName) {
+        let cleaned = rawRuleName.toLowerCase().trim();
+        for (let key in MASTER_SPELLING_RULES) {
+            if (cleaned.startsWith(key)) {
+                return MASTER_SPELLING_RULES[key];
+            }
+        }
+        return null;
+    }
+
     function renderStep() {
         const card = document.getElementById('gameCard');
         if (Object.keys(masterRulesMap).length === 0) {
@@ -152,7 +155,8 @@
             const currentData = activeLessonWords[currentWordIndex];
             let progressHTML = `<div class="progress-bar">${activeLessonLabel} &bull; Word ${currentWordIndex + 1} of ${activeLessonWords.length}</div>`;
             
-            let ruleExplanation = MASTER_SPELLING_RULES[currentData.rule] || `💡 <strong>Pattern Rule:</strong> Focus on spelling words in the <em>${currentData.rule}</em> category carefully!`;
+            // Runs our smart rule matcher to find the full lesson block
+            let ruleExplanation = findRuleExplanation(currentData.rule) || `💡 <strong>Pattern Rule:</strong> Focus on spelling words in the <em>${currentData.rule}</em> category carefully!`;
 
             if (currentStep === 1) {
                 card.innerHTML = `${progressHTML}<div class="target-word">${currentData.word}</div><div class="rule-box">${ruleExplanation}</div><button onclick="nextStep()">I Studied It</button>`;
@@ -175,13 +179,8 @@
     function nextStep() { currentStep++; renderStep(); }
     
     function verifyTeacherCode() { 
-        if(document.getElementById('passInput').value.trim().toLowerCase() === getRequiredPassword()) { 
-            nextStep(); 
-        } else { 
-            const fb = document.getElementById('lockFeedback'); 
-            fb.className = "feedback error"; 
-            fb.innerHTML = "Incorrect password lock."; 
-        } 
+        if(document.getElementById('passInput').value.trim().toLowerCase() === getRequiredPassword()) { nextStep(); } 
+        else { const fb = document.getElementById('lockFeedback'); fb.className = "feedback error"; fb.innerHTML = "Incorrect password lock."; } 
     }
     
     function checkTestAnswer() {
