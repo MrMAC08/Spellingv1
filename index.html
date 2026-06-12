@@ -3,199 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Year 3 Vocabulary Station</title>
+    <title>Year Three Vocabulary Station</title>
     <style>
-        :root { --primary: #6366f1; --success: #10b981; --danger: #ef4444; --bg: #f8fafc; --card-bg: #ffffff; --text: #0f172a; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 800px; }
-        .teacher-panel { background: #f1f5f9; border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px; margin-bottom: 30px; }
-        .teacher-panel h2 { margin-top: 0; color: #334155; }
-        .bulk-textarea { width: 100%; height: 180px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: monospace; font-size: 13px; box-sizing: border-box; margin-bottom: 15px; resize: vertical; }
-        .student-card { background: var(--card-bg); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); padding: 40px; text-align: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; width: 100%; max-width: 650px; margin-top: 20px; }
-        .menu-btn { background-color: #f8fafc; color: var(--text); border: 2px solid #e2e8f0; padding: 18px; font-size: 1.05rem; border-radius: 10px; cursor: pointer; font-weight: bold; text-align: left; display: flex; flex-direction: column; justify-content: space-between; }
-        .menu-btn:hover { background-color: var(--primary); color: white; border-color: var(--primary); }
-        .progress-bar { font-weight: bold; color: var(--primary); margin-bottom: 20px; font-size: 1.1rem; }
-        .target-word { font-size: 4.5rem; font-weight: 800; letter-spacing: 1px; margin: 10px 0; transition: opacity 0.5s ease; }
+        :root { --primary: #2563eb; --success: #059669; --danger: #dc2626; --bg: #f1f5f9; --card-bg: #ffffff; --text: #0f172a; }
+        
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 10px; }
+        
+        .main-wrapper { width: 100%; max-width: 850px; margin: 15px auto; display: block; }
+        
+        .student-card { background: var(--card-bg); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); padding: 30px; text-align: center; box-sizing: border-box; display: block; position: relative; }
+        
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; width: 100%; margin-top: 15px; clear: both; }
+        
+        .menu-btn { background-color: #f8fafc; color: var(--text); border: 2px solid #e2e8f0; padding: 16px; font-size: 1.02rem; border-radius: 10px; cursor: pointer; font-weight: bold; text-align: left; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; width: 100%; position: relative; z-index: 10; transition: all 0.2s; }
+        .menu-btn:hover { background-color: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); }
+        
+        .top-navigation-bar { display: block; width: 100%; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 20px; text-align: left; box-sizing: border-box; }
+        .nav-inner-layout { display: flex; justify-content: space-between; align-items: center; }
+        
+        .back-nav-btn { background: #e2e8f0; color: #475569; border: none; padding: 8px 14px; font-size: 0.9rem; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .back-nav-btn:hover { background: #cbd5e1; color: var(--text); }
+        
+        .target-word { font-size: 4.2rem; font-weight: 800; letter-spacing: 1px; margin: 15px 0; transition: opacity 0.5s ease; color: var(--text); }
         .hidden-word { opacity: 0 !important; }
-        .rule-box { background: #f8fafc; border-left: 5px solid var(--primary); padding: 20px; border-radius: 0 8px 8px 0; font-size: 1.15rem; margin: 20px 0; max-width: 90%; text-align: left; line-height: 1.6; }
+        
+        .rule-box { background: #f8fafc; border-left: 5px solid var(--primary); padding: 20px; border-radius: 0 8px 8px 0; font-size: 1.15rem; margin: 20px 0; width: 100%; box-sizing: border-box; text-align: left; line-height: 1.6; }
         .rule-box strong { color: var(--primary); }
         .rule-box ul { margin: 8px 0; padding-left: 20px; }
-        .lock-container { background: #fef2f2; border: 2px dashed var(--danger); border-radius: 8px; padding: 15px; margin: 0 auto; width: 90%; max-width: 400px; }
-        .teacher-password-input, .student-input { font-size: 1.5rem; padding: 12px; text-align: center; border: 3px solid #cbd5e1; border-radius: 8px; outline: none; }
-        .teacher-password-input { width: 240px; font-size: 1.2rem; padding: 8px; text-transform: lowercase;}
-        .student-input { width: 80%; max-width: 350px; text-transform: lowercase; }
-        button { background-color: var(--primary); color: white; border: none; padding: 12px 28px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; }
-        button:hover { background-color: #4f46e5; }
-        .sentence-prompt { font-size: 1.6rem; margin-bottom: 25px; line-height: 1.6; }
-        .sentence-prompt em { color: var(--primary); font-weight: bold; font-style: normal; text-decoration: underline; }
+        
+        .lock-container { background: #fef2f2; border: 2px dashed var(--danger); border-radius: 8px; padding: 15px; margin: 0 auto; width: 100%; max-width: 400px; box-sizing: border-box; }
+        
+        .student-input { font-size: 1.5rem; padding: 12px; text-align: center; border: 3px solid #cbd5e1; border-radius: 8px; outline: none; width: 80%; max-width: 350px; display: inline-block; box-sizing: border-box; }
+        .teacher-password-input { font-size: 1.3rem; padding: 8px; text-align: center; border: 3px solid #cbd5e1; border-radius: 8px; outline: none; width: 220px; display: inline-block; box-sizing: border-box; }
+        
+        button.action-btn { background-color: var(--primary); color: white; border: none; padding: 12px 28px; font-size: 1.1rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 20px; display: inline-block; }
+        button.action-btn:hover { background-color: #1d4ed8; }
+        
+        .sentence-prompt { font-size: 1.6rem; margin-bottom: 25px; line-height: 1.6; text-align: center; }
         .feedback { font-size: 1.2rem; font-weight: bold; margin-top: 15px; }
         .feedback.success { color: var(--success); }
         .feedback.error { color: var(--danger); }
-        .toggle-panel-btn { background: #64748b; margin-bottom: 10px; padding: 8px 16px; font-size: 0.9rem; color: white; border: none; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
-<div class="container">
-    <button class="toggle-panel-btn" onclick="secureTogglePanel()">Open Control Panel</button>
-    <div class="teacher-panel" id="teacherPanel">
-        <h2>Year 3 Setup Panel</h2>
-        <div style="margin-bottom: 15px;">
-            <label style="font-weight:bold;">First Word Unlock Passcode: </label>
-            <input type="text" id="teacherCodeSetting" value="sunny" style="padding:5px; font-size:1rem; width:120px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-            <label style="font-weight:bold; display:block; margin-bottom:5px;">Paste Year 3 Word List Below:</label>
-            <div style="font-size:0.85rem; color:#64748b; margin-bottom:5px;">Format: Word, Rule_Key, Sentence with __ blank</div>
-            <textarea id="bulkPasteInput" class="bulk-textarea" placeholder="catch, trigraph_tch, Did you __ the ball?&#10;table, consonant_le, Put your book on the __."></textarea>
-            <button onclick="processBulkPaste()" style="margin-top:0; padding:10px 20px; font-size:1rem; background-color:var(--success); width:100%;">Apply List to Year 3</button>
-        </div>
-    </div>
+
+<div class="main-wrapper">
     <div class="student-card" id="gameCard"></div>
 </div>
 
 <script>
-    // Comprehensive Master Dictionary covering all core Year 3 curriculum patterns
     const MASTER_SPELLING_RULES = {
-        "final_y_vowel": "🏫 <strong>The 'Y' as a Vowel Lesson:</strong><br>Did you know the letter <strong>Y</strong> acts like a copycat thief? It doesn't have its own vowel sound, so it steals sounds from English vowels depending on how long the word is!<br><ul><li>In short, <strong>1-syllable words</strong>, Y steals the long <strong>/i/</strong> sound (like <em>cry</em>, <em>fly</em>, <em>try</em>).</li><li>In longer, <strong>2-syllable words</strong>, Y steals the long <strong>/e/</strong> sound (like <em>puppy</em>, <em>baby</em>, <em>candy</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> Listen to the syllables! If you hear a long /e/ at the very end of a two-beat word, don't write an 'e'—write a <strong>y</strong>!",
-        
-        "trigraph_tch": "🏫 <strong>The Trigraph 'tch' Lesson:</strong><br>A trigraph is a fancy word for <strong>three letters making one single sound</strong>. The letters <strong>t, c, and h</strong> team up to make the crisp /ch/ sound. But they only get to work under very strict circumstances!<br><ul><li>Use <strong>tch</strong> right after a single, short vowel sound (like in <em>ca-tch</em>, <em>fe-tch</em>, or <em>ma-tch</em>).</li><li>If there is a long vowel or a consonant blocker in the way, use regular <strong>ch</strong> instead (like <em>bench</em> or <em>reach</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> If the vowel right before the /ch/ sound is short and sharp, it needs the protective <strong>t</strong> structure!",
-        
-        "r_controlled_er_ir_u": "🏫 <strong>The Bossy R (/er/) Lesson:</strong><br>The letter <strong>R</strong> is incredibly loud and bossy. When it sits right behind the vowels <strong>e, i, or u</strong>, it completely steals their voices and forces them all to make the exact same <strong>/er/</strong> sound!<br><ul><li><strong>er</strong> is the most common pattern (like <em>her</em>, <em>term</em>).</li><li><strong>ir</strong> often shows up in action words or birds (like <em>twirl</em>, <em>girl</em>, <em>bird</em>).</li><li><strong>ur</strong> is typically found in deep sounds or items (like <em>burn</em>, <em>fur</em>, <em>turn</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> Because they sound identical, try to memorize the 'word family' shapes in your mind while writing them down.",
-        
-        "vccv_syllable": "🏫 <strong>Syllable Division (VCCV) Lesson:</strong><br>When you hit a big word, look closely at the pattern of its letters. If you see a <strong>Vowel-Consonant-Consonant-Vowel</strong> pattern, you can use the 'Chop Rule' to split it completely in half between the two consonants!<br><ul><li>Look at <strong>trumpet</strong>: u (vowel), m (consonant), p (consonant), e (vowel). Chop it: <em>trum - pet</em>.</li><li>Look at <strong>kitten</strong>: i (vowel), t (consonant), t (consonant), e (vowel). Chop it: <em>kit - ten</em>.</li></ul>⚠️ <strong>Spelling Check:</strong> Dividing words into these smaller chunks keeps the first vowel locked into its short, native sound!",
-        
-        "vcv_camel_rule": "🏫 <strong>The Camel Rule (VC.V) Lesson:</strong><br>What happens when there is only <strong>one consonant</strong> trapped between two vowels? Usually, the word breaks before the consonant. But the Camel Rule is the special exception where we break the word <strong>after</strong> the consonant!<br><ul><li>In the word <strong>camel</strong>, the 'm' goes with the first part: <em>cam - el</em>. This keeps the 'a' short and crisp.</li><li>Same with <strong>cabin</strong>: <em>cab - in</em>. It keeps the 'a' sounding like /a/ instead of /ay/.</li></ul>⚠️ <strong>Spelling Check:</strong> If you hear a short vowel sound followed by a single consonant beat, the consonant is anchoring that short vowel!",
-        
-        "v_cv_tiger_rule": "🏫 <strong>The Tiger Rule (V.CV) Lesson:</strong><br>This is the standard rule for a single consonant between two vowels. We divide the word safely <strong>before</strong> the consonant. This leaves the first vowel wide open, letting it shout its long name!<br><ul><li>Look at <strong>tiger</strong>: We split before the g: <em>ti - ger</em>. The 'i' says its long name!</li><li>Look at <strong>paper</strong>: We split before the p: <em>pa - per</em>. The 'a' says its long name!</li></ul>⚠️ <strong>Spelling Check:</strong> If the first syllable sounds completely open and ends in a pure vowel name, split right after it.",
-        
-        "suffix_ful_less": "🏫 <strong>Suffix Meanings (-ful and -less):</strong><br>A suffix is a building block added to the end of a base word that changes what the word means.<br><ul><li><strong>-ful</strong> means 'full of' (like <em>helpful</em> means full of help). <strong>Crucial Warning:</strong> Even though it means 'full', it is spelled with only <strong>one L</strong> at the end!</li><li><strong>-less</strong> means 'without' (like <em>fearless</em> means completely without fear).</li></ul>⚠️ <strong>Spelling Check:</strong> Watch that tricky '-ful'! Never write double 'll' when it is acting as a suffix helper.",
-        
-        "cvc_doubling": "🏫 <strong>The CVC Doubling Lesson:</strong><br>Before you attach a vowel ending (like <em>-ing</em> or <em>-ed</em>) to a short 1-syllable word, you must check its tail. If it ends in a strict <strong>Consonant-Vowel-Consonant</strong> order, you have to <strong>double the final letter</strong>!<br><ul><li>Take <strong>run</strong> (CVC) -> double the n -> <strong>running</strong>.</li><li>Take <strong>hop</strong> (CVC) -> double the p -> <strong>hopped</strong>.</li></ul>⚠️ <strong>Spelling Check:</strong> If you forget to double the letter, the vowel suffix will turn the word into a completely different long sound (like <em>hopeing</em> instead of <em>hopping</em>)!",
-        
-        "silent_e_suffix": "🏫 <strong>The Silent E Drop Lesson:</strong><br>Silent 'E' loves to hide at the end of words to make vowels say their long names (like <em>hope</em> or <em>bake</em>). But when adding suffixes, it has to follow strict traffic rules:<br><ul><li>If the suffix starts with a <strong>vowel</strong> (like -ing, -ed), you must <strong>drop the E completely</strong> (<em>bake</em> becomes <em>baking</em>).</li><li>If the suffix starts with a <strong>consonant</strong> (like -ful, -ly), you <strong>keep the E safely in place</strong> (<em>hope</em> becomes <em>hopeful</em>).</li></ul>⚠️ <strong>Spelling Check:</strong> Look closely at the suffix you are pasting on. Is its first letter a vowel? Drop that 'e'!",
-        
-        "consonant_le": "🏫 <strong>The Consonant + 'le' Syllable Lesson:</strong><br>Words ending in <strong>-le</strong> have a unique rule: the 'le' always grabs the consonant sitting right in front of it to form its own final syllable unit!<br><ul><li>In <strong>table</strong>, 'le' grabs 'b' to make <em>ta - ble</em>.</li><li>In <strong>purple</strong>, 'le' grabs 'p' to make <em>pur - ple</em>.</li><li>In <strong>bubble</strong>, the vowel is short, so we double the consonant to divide safely: <em>bub - ble</em>.</li></ul>⚠️ <strong>Spelling Check:</strong> Count three letters from the very end of the word backwards (like b-l-e), and that is exactly where your syllable breaks!"
+        "heart_words": "🏫 <strong>Heart Words Lesson:</strong><br>Heart Words contain tricky parts that don't follow regular spelling rules. We have to learn these unexpected letter choices by heart!<br><ul><li>Examples: any, many, also, their, through, bought, really, gone, always, house, eyes.</li></ul>",
+        "r_controlled_ar_or": "🏫 <strong>R-Controlled Vowels 'ar' and 'or' Lesson (List 18):</strong><br>When the letter 'r' sits directly after a vowel, it controls it and changes its sound to /ar/ (as in <em>farm</em>) or /or/ (as in <em>for</em>).<br><ul><li>Examples: dark, start, garden, carpet, shark, corn, popcorn, storm, report, morning.</li></ul>",
+        "final_y_sounds": "🏫 <strong>Final 'y' as /i/ or /e/ Lesson (List 19):</strong><br>The letter 'y' at the end of a 1-syllable word represents the long /i/ sound. At the end of a 2-syllable word, it represents long /e/.<br><ul><li>Examples (long /i/): cry, why, try, fly, sky.</li><li>Examples (long /e/): baby, happy, funny, family, party, lucky.</li></ul>",
+        "ee_ea_vowels": "🏫 <strong>Vowel Teams 'ee' and 'ea' Lesson (List 20):</strong><br>Both vowel teams 'ee' and 'ea' join together to represent the long /e/ sound inside base words.<br><ul><li>Examples: green, street, sleep, weekend, beach, dream, leaf, clean, speak.</li></ul>",
+        "oa_ow_vowels": "🏫 <strong>Vowel Teams 'oa' and 'ow' Lesson (List 21):</strong><br>The vowel teams 'oa' (usually in the middle) and 'ow' (often at the end) both represent the long /o/ sound.<br><ul><li>Examples: boat, road, coat, throat, float, show, grow, window, yellow, below.</li></ul>",
+        "homophones_one": "🏫 <strong>Homophones 1 Lesson (List 22):</strong><br>Homophones sound identical to another word when spoken, but feature completely different meanings and spelling layouts.<br><ul><li>Examples: to/too/two, be/bee, by/buy, for/four, sail/sale, mail/male, meat/meet, weak/week.</li></ul>",
+        "oo_vowel_sounds": "🏫 <strong>Vowel Team 'oo' Two Sounds Lesson (List 23):</strong><br>The team 'oo' can make two distinct sounds: a short book sound as in <em>good</em>, or a long ooo sound as in <em>food</em>.<br><ul><li>Examples (/oo/ as in good): school, took, book, wood, shook.</li><li>Examples (/oo/ as in food): room, soon, moon, spoon, balloon, igloo.</li></ul>",
+        "consonant_clusters": "🏫 <strong>3-Letter Consonant Clusters Lesson (List 25):</strong><br>In clusters like str-, spr-, scr-, and spl-, three separate consonants blend together but each letter keeps its sound.<br><ul><li>Examples: strap, street, stream, sprint, spray, sprout, scrub, scream, scratch, splash, split.</li></ul>",
+        "oi_oy_vowels": "🏫 <strong>Vowel Teams 'oi' and 'oy' Lesson (List 26):</strong><br>Both teams make the /oy/ sound. Use 'oi' in the middle of words/syllables and 'oy' at the very end of a word.<br><ul><li>Examples: boil, moist, point, join, noise, voice, toy, boy, enjoy, destroy.</li></ul>",
+        "r_controlled_er_ir_ur": "🏫 <strong>R-Controlled Vowels 'er', 'ir', 'ur' Lesson (List 28):</strong><br>When followed by the letter 'r', the vowels 'e', 'i', and 'u' all transform into the exact same vocal sound: /er/!<br><ul><li>Examples: turn, hurt, church, girl, first, shirt, bird, her, fern, germ, nerd.</li></ul>",
+        "vccv_syllable_division": "🏫 <strong>Syllable Division - VCCV Layout Lesson (List 29):</strong><br>When two consonants are trapped between two vowels, split the word right between the consonants (VC/CV) to spell it out layer by layer.<br><ul><li>Examples: rab-bit, ten-nis, pup-pet, trum-pet, tab-let, sis-ter, in-vent.</li></ul>",
+        "schwa_ending_er": "🏫 <strong>Schwa 'er' at the End of a Word Lesson (List 30):</strong><br>In multi-syllable words, the final 'er' syllable is unstressed. The vowel sound drops its pure tone and sounds like a short /u/.<br><ul><li>Examples: runner, over, winter, teacher, summer, under, dinner, swimmer.</li></ul>",
+        "prefix_un_meaning": "🏫 <strong>Prefix un- Morphology Lesson (List 31):</strong><br>The structural prefix layout <strong>un-</strong> attaches to the front of base words to immediately mean <strong>'not'</strong> or 'the opposite of'.<br><ul><li>Examples: undo, untie, unsafe, unlucky, unlock, unfold, unable, unhappy, unknown.</li></ul>",
+        "suffixes_morphology_three": "🏫 <strong>Suffixes -ly, -er, -est Lesson (List 32):</strong><br>The suffix -ly turns base words into adverbs. The suffixes -er and -est are used to compare adjectives side-by-side.<br><ul><li>Examples: lovely, loudly, quickly, suddenly, safely, bigger, biggest, smaller, smallest, louder, loudest.</li></ul>",
+        "trigraph_tch_rule": "🏫 <strong>Trigraph 'tch' Short Vowel Lesson (List 33):</strong><br>A trigraph is a single sound made of three letters. We use <strong>'tch'</strong> at the end of 1-syllable words directly after a short vowel.<br><ul><li>Examples: catch, match, fetch, stretch, pitch, ditch, witch, hutch, clutch, watch, kitchen.</li></ul>"
     };
+
+    const DATA_LISTS = [
+        {
+            title: "Heart Words",
+            words: [
+                { word: "many", rule: "heart_words", sentence: "There are so __ bright stars visible in the dark sky tonight." },
+                { word: "their", rule: "heart_words", sentence: "The children put on __ warm winter coats before going outside." },
+                { word: "through", rule: "heart_words", sentence: "The train went directly __ the dark mountain tunnel." },
+                { word: "bought", rule: "heart_words", sentence: "Dad went to the market and __ some fresh red apples." },
+                { word: "always", rule: "heart_words", sentence: "You should __ wash your hands properly before eating lunch." },
+                { word: "house", rule: "heart_words", sentence: "We live in a cozy blue __ at the very end of the street." }
+            ]
+        },
+        {
+            title: "List 18: R-Controlled 'ar' / 'or'",
+            words: [
+                { word: "start", rule: "r_controlled_ar_or", sentence: "The race runners stood behind the line waiting to __." },
+                { word: "garden", rule: "r_controlled_ar_or", sentence: "Beautiful colorful flowers are blooming inside our backyard __." },
+                { word: "carpet", rule: "r_controlled_ar_or", sentence: "Please wipe your muddy shoes before stepping onto the living room __." },
+                { word: "popcorn", rule: "r_controlled_ar_or", sentence: "We ate a large bowl of salty __ while watching the movie." },
+                { word: "morning", rule: "r_controlled_ar_or", sentence: "The bright sun rises early in the __ to light up the sky." },
+                { word: "storm", rule: "r_controlled_ar_or", sentence: "Loud thunder and flashes of lightning came with the dark rain __." }
+            ]
+        },
+        {
+            title: "List 19: Final 'y' Sounds",
+            words: [
+                { word: "why", rule: "final_y_sounds", sentence: "Can you explain __ the ocean water looks so blue today?" },
+                { word: "try", rule: "final_y_sounds", sentence: "Always __ your best when working on a difficult school problem." },
+                { word: "sky", rule: "final_y_sounds", sentence: "A white airplane flew high above the fluffy clouds in the __." },
+                { word: "baby", rule: "final_y_sounds", sentence: "The tiny __ fell fast asleep in the crib under a soft blanket." },
+                { word: "family", rule: "final_y_sounds", sentence: "Our whole __ gathered together at the table for a holiday dinner." },
+                { word: "lucky", rule: "final_y_sounds", sentence: "He felt very __ to find a rare four-leaf clover in the grass." }
+            ]
+        },
+        {
+            title: "List 20: Vowel Teams 'ee' / 'ea'",
+            words: [
+                { word: "green", rule: "ee_ea_vowels", sentence: "Fresh __ grass began to grow quickly after the spring rain." },
+                { word: "street", rule: "ee_ea_vowels", sentence: "Look both ways carefully before walking across the busy __." },
+                { word: "weekend", rule: "ee_ea_vowels", sentence: "We love going to the park to play sports over the __." },
+                { word: "beach", rule: "ee_ea_vowels", sentence: "We built a giant sandcastle right on the shore at the __." },
+                { word: "leaf", rule: "ee_ea_vowels", sentence: "A single autumn __ drifted slowly down from the tall oak tree." },
+                { word: "clean", rule: "ee_ea_vowels", sentence: "Please help tidy up the room so it looks perfectly neat and __." }
+            ]
+        },
+        {
+            title: "List 21 & 22: 'oa' / 'ow' & Homophones",
+            words: [
+                { word: "boat", rule: "oa_ow_vowels", sentence: "A white fishing __ bobbed up and down on the ocean waves." },
+                { word: "window", rule: "oa_ow_vowels", sentence: "Look out the __ to see if it is still raining outside." },
+                { word: "yellow", rule: "oa_ow_vowels", sentence: "The bright __ sunflower grew taller than the wooden fence." },
+                { word: "too", rule: "homophones_one", sentence: "I want to go to the playground, and my brother wants to go __." },
+                { word: "four", rule: "homophones_one", sentence: "A square shape has exactly __ equal sides and straight corners." },
+                { word: "week", rule: "homophones_one", sentence: "There are seven days contained within one single calendar __." }
+            ]
+        },
+        {
+            title: "List 23 & 25: Vowel 'oo' & Clusters",
+            words: [
+                { word: "school", rule: "oo_vowel_sounds", sentence: "We walk through the gates of our __ every morning ready to learn." },
+                { word: "book", rule: "oo_vowel_sounds", sentence: "She read a fascinating chapter __ about hidden treasures before bed." },
+                { word: "soon", rule: "oo_vowel_sounds", sentence: "The sun will be setting __, so we should head back indoors." },
+                { word: "street", rule: "consonant_clusters", sentence: "The cars drove slowly down our quiet neighborhood __." },
+                { word: "stream", rule: "consonant_clusters", sentence: "Cool fresh water flowed gently over the rocks inside the forest __." },
+                { word: "splash", rule: "consonant_clusters", sentence: "The kids jumped right into the swimming pool with a massive __." }
+            ]
+        },
+        {
+            title: "List 26 & 28: Vowels 'oi'/'oy' & 'er'/'ir'/'ur'",
+            words: [
+                { word: "boil", rule: "oi_oy_vowels", sentence: "We need to __ the water on the stove before adding the pasta." },
+                { word: "point", rule: "oi_oy_vowels", sentence: "Use your index finger to __ at the map location on the board." },
+                { word: "enjoy", rule: "oi_oy_vowels", sentence: "I hope you thoroughly __ playing this fun vocabulary game today!" },
+                { word: "turn", rule: "r_controlled_er_ir_ur", sentence: "Make a sharp left __ when you reach the edge of the playground." },
+                { word: "girl", rule: "r_controlled_er_ir_ur", sentence: "The clever __ raised her hand quickly to answer the teacher's question." },
+                { word: "fern", rule: "r_controlled_er_ir_ur", sentence: "A green leafy __ plant grew beautifully in the shady forest spot." }
+            ]
+        },
+        {
+            title: "List 29 & 30: Syllables & Endings",
+            words: [
+                { word: "rabbit", rule: "vccv_syllable_division", sentence: "A fluffy brown __ hopped quickly across the green lawn." },
+                { word: "tennis", rule: "vccv_syllable_division", sentence: "They used rackets to hit the yellow ball back and forth in __." },
+                { word: "puppet", rule: "vccv_syllable_division", sentence: "He put his hand inside the cloth __ to make it talk to the class." },
+                { word: "winter", rule: "schwa_ending_er", sentence: "Heavy snow fell and freezing winds blew during the cold __ months." },
+                { word: "teacher", rule: "schwa_ending_er", sentence: "Our kind __ explained the new math lesson clearly on the board." },
+                { word: "dinner", rule: "schwa_ending_er", sentence: "Our family sat down around the table to eat a delicious evening __." }
+            ]
+        },
+        {
+            title: "List 31 & 32: Prefixes & Suffixes",
+            words: [
+                { word: "untie", rule: "prefix_un_meaning", sentence: "Please help me __ this tight knot in my boot shoelace." },
+                { word: "unlock", rule: "prefix_un_meaning", sentence: "Dad used the front door key to safely __ the house house lock." },
+                { word: "unhappy", rule: "prefix_un_meaning", sentence: "The little boy felt quite __ when his toy accidentally broke." },
+                { word: "quickly", rule: "suffixes_morphology_three", sentence: "The fast cheetah sprinted __ across the wide open grassy plain." },
+                { word: "bigger", rule: "suffixes_morphology_three", sentence: "An elephant is much __ in physical size than a small farm horse." },
+                { word: "loudest", rule: "suffixes_morphology_three", sentence: "The thunder clap made the absolute __ sound heard all afternoon." }
+            ]
+        },
+        {
+            title: "List 33: Trigraph 'tch'",
+            words: [
+                { word: "catch", rule: "trigraph_tch_rule", sentence: "Get ready to __ the baseball in your glove when I throw it." },
+                { word: "match", rule: "trigraph_tch_rule", sentence: "We went down to the stadium to watch an exciting football __." },
+                { word: "stretch", rule: "trigraph_tch_rule", sentence: "It is important to safely __ your muscles before running a long race." },
+                { word: "pitch", rule: "trigraph_tch_rule", sentence: "The baseball player got ready to __ the ball straight to the batter." },
+                { word: "witch", rule: "trigraph_tch_rule", sentence: "The old spooky story described a friendly __ riding a magic broomstick." },
+                { word: "kitchen", rule: "trigraph_tch_rule", sentence: "Delicious baking smells drifted out from the warm cooking __." }
+            ]
+        }
+    ];
 
     const formViewURL = "https://docs.google.com/forms/d/e/1FAIpQLSddB0NQFaIBv9x-feJucH_YGDwHb8suDI9h1ShPOv1yGzCCXQ/viewform";
     const nameKey = "entry.421008981"; const wordsKey = "entry.1429911539"; const incorrectKey = "entry.407995943"; const scoreKey = "entry.211442136";
     
-    const storageKeyCurriculum = 'genericSavedCurriculum_Year3';
-    const storageKeyCode = 'genericSavedCode_Year3';
-    const MASTER_PANEL_PASSWORD = "admin"; 
-
-    let masterRulesMap = {}; let activeLessonWords = []; let currentWordIndex = 0; let currentStep = 0; 
-    let masterTeacherCode = "sunny"; let activeLessonLabel = ""; let studentName = "";
+    let activeLessonWords = []; let currentWordIndex = 0; let currentStep = 0; 
+    let activeLessonLabel = ""; let studentName = "";
     let correctWordsList = []; let incorrectWordsList = []; let correctCount = 0;
 
-    function secureTogglePanel() {
-        const p = document.getElementById('teacherPanel');
-        if (p.style.display === 'none' || p.style.display === '') {
-            const check = prompt("Enter Master Teacher Password to unlock configuration:");
-            if (check === MASTER_PANEL_PASSWORD) { p.style.display = 'block'; }
-            else if (check !== null) { alert("Incorrect teacher security credentials."); }
-        } else { p.style.display = 'none'; }
-    }
-
-    function processBulkPaste() {
-        const rawText = document.getElementById('bulkPasteInput').value.trim();
-        if(!rawText) return alert("Box is empty!");
-        const lines = rawText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-        let tempMap = {};
-        lines.forEach(line => {
-            const parts = line.split(',');
-            const word = parts[0] ? parts[0].trim().toLowerCase() : "";
-            const ruleName = parts[1] ? parts[1].trim() : "General List";
-            const sentence = parts.slice(2).join(',') ? parts.slice(2).join(',').trim() : "Fill in the blank: ___";
-            if (word) { if (!tempMap[ruleName]) tempMap[ruleName] = []; tempMap[ruleName].push({ word, rule: ruleName, sentence }); }
-        });
-        if (Object.keys(tempMap).length === 0) return alert("Invalid format layout lines.");
-        masterRulesMap = tempMap;
-        masterTeacherCode = document.getElementById('teacherCodeSetting').value.trim().toLowerCase();
-        localStorage.setItem(storageKeyCurriculum, JSON.stringify(masterRulesMap));
-        localStorage.setItem(storageKeyCode, masterTeacherCode);
-        document.getElementById('bulkPasteInput').value = "";
-        document.getElementById('teacherPanel').style.display = 'none';
-        studentName = ""; currentStep = 0; renderStep();
-        alert(`Year 3 updated successfully!`);
-    }
-    
-    function getRequiredPassword() { 
-        return currentWordIndex === 0 ? masterTeacherCode : activeLessonWords[currentWordIndex - 1].word; 
-    }
-
-    // Smart Matcher: Automatically strips extra tags like '_part1' or spaces to identify the root rule
-    function findRuleExplanation(rawRuleName) {
-        let cleaned = rawRuleName.toLowerCase().trim();
-        for (let key in MASTER_SPELLING_RULES) {
-            if (cleaned.startsWith(key)) {
-                return MASTER_SPELLING_RULES[key];
-            }
-        }
-        return null;
+    function resetToListMenu() {
+        currentStep = 0.5;
+        renderStep();
     }
 
     function renderStep() {
         const card = document.getElementById('gameCard');
-        if (Object.keys(masterRulesMap).length === 0) {
-            card.innerHTML = `<h2>Year 3 Station</h2><p>Click <strong>Open Control Panel</strong> to paste your Year 3 list!</p>`;
-            return;
-        }
+        
         if (currentStep === 0) {
-            card.innerHTML = `<h2>Vocabulary Station</h2><p style="font-size: 1.2rem;">Enter your name:</p><input type="text" id="nameInput" class="student-input" placeholder="Your Name..."><br><button onclick="submitName()">Enter Station</button>`;
+            card.innerHTML = `<h2>Year Three Vocabulary Station</h2><p style="font-size: 1.2rem;">Enter your name to begin:</p><input type="text" id="nameInput" class="student-input" placeholder="Your Name..."><br><button class="action-btn" onclick="submitName()">Enter Station</button>`;
             document.getElementById('nameInput').focus();
         } else if (currentStep === 0.5) {
             let buttons = "";
-            Object.keys(masterRulesMap).forEach((ruleName) => {
-                buttons += `<button class="menu-btn" onclick="launchRule('${encodeURIComponent(ruleName)}')"><span style="display:block; margin-bottom: 8px;">${ruleName}</span><span style="font-size:0.85rem; font-weight:normal; color:#64748b;">(${masterRulesMap[ruleName].length} words)</span></button>`;
+            DATA_LISTS.forEach((listObj, index) => {
+                buttons += `<button class="menu-btn" onclick="launchRuleByIndex(${index})"><span style="display:block; margin-bottom: 8px;">${listObj.title}</span><span style="font-size:0.85rem; font-weight:normal; color:#64748b;">(${listObj.words.length} words)</span></button>`;
             });
-            card.innerHTML = `<h2>Hello, ${studentName}!</h2><p style="font-size: 1.2rem; margin-bottom:10px;">Select your list:</p><div class="menu-grid">${buttons}</div>`;
+            card.innerHTML = `<h2>Welcome, ${studentName}!</h2><p style="font-size: 1.2rem; margin-bottom:10px;">Select your spelling list:</p><div class="menu-grid">${buttons}</div>`;
         } else {
             const currentData = activeLessonWords[currentWordIndex];
-            let progressHTML = `<div class="progress-bar">${activeLessonLabel} &bull; Word ${currentWordIndex + 1} of ${activeLessonWords.length}</div>`;
             
-            // Runs our smart rule matcher to find the full lesson block
-            let ruleExplanation = findRuleExplanation(currentData.rule) || `💡 <strong>Pattern Rule:</strong> Focus on spelling words in the <em>${currentData.rule}</em> category carefully!`;
+            let progressHTML = `
+                <div class="top-navigation-bar">
+                    <div class="nav-inner-layout">
+                        <span style="font-weight:bold; color:var(--primary); font-size:1.1rem;">${activeLessonLabel} &bull; Word ${currentWordIndex + 1} of ${activeLessonWords.length}</span>
+                        <button class="back-nav-btn" onclick="resetToListMenu()">⬅ Go Back to Lists</button>
+                    </div>
+                </div>`;
+                
+            let ruleExplanation = MASTER_SPELLING_RULES[currentData.rule] || `💡 <strong>Pattern Rule:</strong> Focus on spelling your target words carefully!`;
 
             if (currentStep === 1) {
-                card.innerHTML = `${progressHTML}<div class="target-word">${currentData.word}</div><div class="rule-box">${ruleExplanation}</div><button onclick="nextStep()">I Studied It</button>`;
+                card.innerHTML = `${progressHTML}<div class="target-word">${currentData.word}</div><div class="rule-box">${ruleExplanation}</div><button class="action-btn" onclick="nextStep()">I Studied It</button>`;
             } else if (currentStep === 2) {
-                let hint = currentWordIndex === 0 ? `The starting lock word is: <strong>${masterTeacherCode}</strong>` : "Type the previous word you just spelled to unlock your notebook work!";
-                card.innerHTML = `${progressHTML}<div style="font-size: 1.4rem; font-weight: bold; color: var(--danger);">Notebook Practice</div><ol style="text-align: left; margin: 20px auto; max-width: 85%; font-size: 1.2rem; line-height: 1.6;"><li>Look closely at the word: <strong>${currentData.word}</strong></li><li>Write it down on paper 5 times.</li></ol><div class="lock-container"><label style="font-weight: bold; display:block; margin-bottom:5px;">Password Lock</label><span style="font-size:0.9rem; color:#64748b; display:block; margin-bottom:10px;">${hint}</span><input type="text" id="passInput" class="teacher-password-input" placeholder="Password..." autocomplete="off"><br><button onclick="verifyTeacherCode()" style="margin-top:10px; padding: 8px 20px; background-color: var(--danger);">Unlock</button><div id="lockFeedback" class="feedback"></div></div>`;
+                let hint = currentWordIndex === 0 ? "The starting password is: <strong>tiger</strong>" : "Type the previous word you just spelled to unlock your notebook work!";
+                let correctPasswordValue = currentWordIndex === 0 ? "tiger" : activeLessonWords[currentWordIndex - 1].word;
+                
+                card.innerHTML = `${progressHTML}<div style="font-size: 1.4rem; font-weight: bold; color: var(--danger);">Notebook Practice</div><ol style="text-align: left; margin: 20px auto; max-width: 85%; font-size: 1.2rem; line-height: 1.6;"><li>Look closely at the word: <strong>${currentData.word}</strong></li><li>Write it down on paper 5 times.</li></ol><div class="lock-container"><label style="font-weight: bold; display:block; margin-bottom:5px;">Password Lock</label><span style="font-size:0.9rem; color:#64748b; display:block; margin-bottom:10px;">${hint}</span><input type="text" id="passInput" class="teacher-password-input" placeholder="Password..." autocomplete="off"><br><button id="lockBtn" style="margin-top:10px; padding: 8px 20px; background-color: var(--danger); border:none; color:white; font-weight:bold; border-radius:6px; cursor:pointer;">Unlock</button><div id="lockFeedback" class="feedback"></div></div>`;
+                
                 document.getElementById('passInput').focus();
+                document.getElementById('lockBtn').onclick = function() {
+                    let enteredPass = document.getElementById('passInput').value.trim().toLowerCase().replace(/[^a-zA-Z0-9]/g, "");
+                    if(enteredPass === correctPasswordValue.toLowerCase().replace(/[^a-zA-Z0-9]/g, "")) { nextStep(); }
+                    else { const fb = document.getElementById('lockFeedback'); fb.className = "feedback error"; fb.innerHTML = "Incorrect password lock."; }
+                };
             } else if (currentStep === 3) {
                 card.innerHTML = `${progressHTML}<p style="font-size:1.3rem;">Study before it disappears...</p><div class="target-word" id="fadingWord">${currentData.word}</div>`;
                 setTimeout(() => { document.getElementById('fadingWord')?.classList.add('hidden-word'); setTimeout(() => { nextStep(); }, 800); }, 1800);
             } else if (currentStep === 4) {
-                card.innerHTML = `${progressHTML}<div class="sentence-prompt">${currentData.sentence}</div><input type="text" id="testInput" class="student-input" placeholder="Spell here" autocomplete="off"><br><button onclick="checkTestAnswer()">Verify Spelling</button><div id="testFeedback" class="feedback"></div>`;
+                card.innerHTML = `${progressHTML}<div class="sentence-prompt">${currentData.sentence}</div><input type="text" id="testInput" class="student-input" placeholder="Spell here" autocomplete="off"><br><button class="action-btn" onclick="checkTestAnswer()">Verify Spelling</button><div id="testFeedback" class="feedback"></div>`;
                 document.getElementById('testInput').focus();
             }
         }
     }
 
     function submitName() { const val = document.getElementById('nameInput').value.trim(); if(val) { studentName = val; currentStep = 0.5; renderStep(); } }
-    function launchRule(encoded) { activeLessonWords = masterRulesMap[decodeURIComponent(encoded)]; activeLessonLabel = decodeURIComponent(encoded); currentWordIndex = 0; correctWordsList = []; incorrectWordsList = []; correctCount = 0; currentStep = 1; renderStep(); }
-    function nextStep() { currentStep++; renderStep(); }
     
-    function verifyTeacherCode() { 
-        if(document.getElementById('passInput').value.trim().toLowerCase() === getRequiredPassword()) { nextStep(); } 
-        else { const fb = document.getElementById('lockFeedback'); fb.className = "feedback error"; fb.innerHTML = "Incorrect password lock."; } 
+    function launchRuleByIndex(index) { 
+        const selectedList = DATA_LISTS[index];
+        activeLessonWords = selectedList.words; 
+        activeLessonLabel = selectedList.title; 
+        currentWordIndex = 0; 
+        correctWordsList = []; 
+        incorrectWordsList = []; 
+        correctCount = 0; 
+        currentStep = 1; 
+        renderStep(); 
     }
     
+    function nextStep() { currentStep++; renderStep(); }
+    
     function checkTestAnswer() {
-        const entered = document.getElementById('testInput').value.trim().toLowerCase();
-        const correct = activeLessonWords[currentWordIndex].word;
-        if(entered === correct) { correctCount++; correctWordsList.push(correct); } else { incorrectWordsList.push(`${entered || '[Blank]'} (${correct})`); }
+        const originalEntered = document.getElementById('testInput').value.trim();
+        const enteredEvaluated = originalEntered.toLowerCase().replace(/[^a-zA-Z-]/g, "");
+        const correctEvaluated = activeLessonWords[currentWordIndex].word.toLowerCase().replace(/[^a-zA-Z-]/g, "");
+        
+        if(enteredEvaluated === correctEvaluated) { 
+            correctCount++; 
+            correctWordsList.push(activeLessonWords[currentWordIndex].word); 
+        } else { 
+            incorrectWordsList.push(`${originalEntered || '[Blank]'} (${activeLessonWords[currentWordIndex].word})`); 
+        }
+        
         const fb = document.getElementById('testFeedback');
-        fb.className = entered === correct ? "feedback success" : "feedback error";
-        fb.innerHTML = entered === correct ? "Correct!" : `Incorrect. Spelling is "${correct}".`;
+        fb.className = enteredEvaluated === correctEvaluated ? "feedback success" : "feedback error";
+        fb.innerHTML = enteredEvaluated === correctEvaluated ? "Correct!" : `Incorrect. Spelling is "${activeLessonWords[currentWordIndex].word}".`;
+        
         setTimeout(() => { if (currentWordIndex < activeLessonWords.length - 1) { currentWordIndex++; currentStep = 1; renderStep(); } else { showEndScreen(); } }, 2200);
     }
 
     function showEndScreen() {
-        let finalScore = `${correctCount} out of ${activeLessonWords.length}`;
-        document.getElementById('gameCard').innerHTML = `<h1 style="color: var(--success);">Practice Complete</h1><p>Great job, ${studentName}!</p><p>Score: <strong>${finalScore}</strong></p><div id="submissionZone"><button onclick="openGoogleFormLink()">Send Progress Form</button></div>`;
+        document.getElementById('gameCard').innerHTML = `
+            <div class="top-navigation-bar">
+                <div class="nav-inner-layout" style="justify-content: flex-end;">
+                    <button class="back-nav-btn" onclick="resetToListMenu()">🏠 Home Menu</button>
+                </div>
+            </div>
+            <h1 style="color: var(--success);">Practice Complete</h1>
+            <p>Great job, ${studentName}!</p>
+            <p>Score: <strong>${correctCount} out of ${activeLessonWords.length}</strong></p>
+            <div id="submissionZone"><button class="action-btn" onclick="openGoogleFormLink()">Send Progress Form</button></div>`;
     }
 
     function openGoogleFormLink() {
@@ -205,14 +299,7 @@
         document.getElementById('submissionZone').innerHTML = `<p style="color: var(--success); font-weight:bold;">Form opened! Click submit on that page to finish.</p>`;
     }
 
-    function init() {
-        const savedCurriculum = localStorage.getItem(storageKeyCurriculum);
-        const savedCode = localStorage.getItem(storageKeyCode);
-        if (savedCurriculum) masterRulesMap = JSON.parse(savedCurriculum);
-        if (savedCode) masterTeacherCode = savedCode;
-    }
-    document.getElementById('teacherPanel').style.display = 'none';
-    init(); renderStep();
+    renderStep();
 </script>
 </body>
 </html>
